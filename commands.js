@@ -24,6 +24,9 @@ program
     .description('Starts searching at the provided path')
     .action(() => {
         prompt(questions[0]).then(res => {
+            if(res.path === '') {
+                res.path = path.join(__dirname)
+            }
             const findDir = (dir) => {
                 files = fs.readdirSync(dir, (err) => {
                     if(err) {
