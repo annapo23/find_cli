@@ -53,6 +53,9 @@ program
     .description('Only prints files whose name matches the given pattern')
     .action(() => {
         prompt(questions).then(res => {
+            if(res.path === '') {
+                res.path = path.join(__dirname)
+            }
             const findFileName = function(dir, name, files) {
                 files = files || fs.readdirSync(dir);
                 files.forEach((file) => {
@@ -60,7 +63,7 @@ program
                     if (fs.statSync(newDir).isDirectory()) {
                         findFileName(newDir, name, fs.readdirSync(newDir))
                     } else {
-                        if (file.substring(-1*(name.length+1)) === name) {
+                        if (file.substring(-1*(name.length+1)) === name || file === name) {
                             console.log('file', file)
                             console.log(newDir)
                         }
@@ -114,6 +117,9 @@ program
     .description('Only prints files that are empty')
     .action(() => {
         prompt(questions[0]).then(res => {
+            if(res.path === '') {
+                res.path = path.join(__dirname)
+            }
             const findEmptyDir = (dir) => {
                 files = fs.readdirSync(dir, (err) => {
                     if(err) {
